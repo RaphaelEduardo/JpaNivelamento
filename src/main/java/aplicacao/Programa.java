@@ -13,10 +13,24 @@ public class Programa {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("exemplo-jpa");
 		EntityManager em = emf.createEntityManager();
 		
-		//Busca dados no DB 
+		//buscando no DB
 		Pessoa p = em.find(Pessoa.class, 2);
 		
-		System.out.println(p);
+		/*
+		 *  Sempre que for fazer alguma alteração tem que colocar o Transaction, 
+		 *  a menos que seja uma simples consulta.
+		 */
+		
+		/*
+		 * Apaga uma pessoa no DB, mas para remover tem de ser um objeto monitorado,
+		 * ou seja, que acabou de ser inserido ou que você buscou e ainda não fechou
+		 * o EntityManager.
+		 */
+				
+		em.getTransaction().begin();
+		em.remove(p);
+		em.getTransaction().commit();
+		
 		System.out.println("Pronto!");
 		
 		em.close();
